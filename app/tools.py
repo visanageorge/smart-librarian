@@ -16,5 +16,3 @@ def get_summary_by_title(searched_title):
             return summary
 
     return "Book not found."
-
-print(get_summary_by_title("The Hobbit"))
