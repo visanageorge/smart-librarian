@@ -2,6 +2,7 @@ from dotenv import load_dotenv
 import os
 import chromadb
 from openai import OpenAI
+from data_loader import load_books
 
 load_dotenv()
 api_key = os.getenv("OPENAI_API_KEY")
@@ -9,12 +10,7 @@ api_key = os.getenv("OPENAI_API_KEY")
 client = OpenAI(api_key=api_key)
 
 # Citim fisierul
-with open("data/book_summaries.md", "r", encoding="utf-8") as f:
-    text = f.read()
-
-# Spargem pe carti
-books = text.split("## Title:")
-books = [b.strip() for b in books if b.strip()]
+books = load_books()
 
 documents = []
 metadatas = []
