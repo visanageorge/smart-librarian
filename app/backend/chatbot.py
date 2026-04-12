@@ -5,6 +5,8 @@ import json
 
 from rag import retrieve_books
 from tools import get_summary_by_title
+from moderation import is_offensive
+from tts import text_to_speech
 
 load_dotenv()
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
@@ -89,8 +91,16 @@ def chat():
         if query.lower() == "exit":
             break
 
-        answer = ask_chatbot(query)
-        print("\nBot:", answer, "\n")
+        if is_offensive(query):
+            print("\nBot:Te rog folosește un limbaj respectuos.")
+        else:
+            answer = ask_chatbot(query)
+            print("\nBot:", answer, "\n")
+            choice = input("🔊 Vrei să auzi răspunsul? (y/n): ")
+
+            if choice.lower() == "y":
+                filename = text_to_speech(answer)
+                print(f"Audio salvat: {filename}")
 
 
 if __name__ == "__main__":
